@@ -68,17 +68,17 @@ public class RandomWalk extends JFrame{
 		      }
 	          
 	          if(width < 0) {
-	        	  width += 500;
+	        	  width = 500;
 	          }
 	          else if(width > 500) {
-	        	  width -= 500;
+	        	  width = 500;
 	          }
 	          
 	          if(height < 0) {
-	        	  height += 500;
+	        	  height = 500;
 	          }
 	          else if(height > 500) {
-	        	  height -= 500;
+	        	  height = 500;
 	          }
 	          
 	          g.drawRect(width, height, 1, 1);
