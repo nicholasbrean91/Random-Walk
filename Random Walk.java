@@ -1,73 +1,97 @@
-//Created By: Nicholas Brean
-//Created On: October 2018
-//Random walk program
+//Created by: Nicholas Brean
+//Created On: Dec 12 2018
+//This program randomly walks from inital point to target.
 
-import java.awt.*;       // Using AWT's Graphics and Color
-import java.awt.event.*; // Using AWT event classes and listener interfaces
+import javax.swing.JFrame;
+import java.awt.Graphics;
 import java.util.Random;
-import javax.swing.*;    // Using Swing's components and containers
- 
-public abstract class RandomWalk extends JFrame implements ActionListener {
-	Timer t = new Timer(5, this);
-	double x = 0, y = 0;
-    public static final int CANVAS_WIDTH  = 800;
-    public static final int CANVAS_HEIGHT = 800;
-    private JFrame f;
-    private JPanel p;
-   
-   private DrawCanvas canvas;
- 
-   public RandomWalk() {
-	    // Generates frame.
-	    JFrame frame = new JFrame();
+import java.util.Scanner;
+import java.awt.Color;
+import java.util.Scanner;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.geom.*;
+import javax.swing.*;
+import javax.swing.Timer;
+  
+public class RandomWalk extends JFrame{
 
-	    // Sets frame resolution and other parameters.
-	    frame.setSize(900, 900);
-	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    frame.setVisible(true);
-	    frame.setResizable(false);
-
-	 // f = new JFrame("Random Walk");
-	 // f.setVisible(true);
-	 // f.setSize(500, 500);
-     // f.setDefaultCloseOperation(EXIT_ON_CLOSE);            
-      //setTitle("RandomWalk"); 
-      //setSize(500, 500);
-      //setVisible(true);   
-   }
- 
-   private class DrawCanvas extends JPanel {
-      // Override paintComponent to perform your own painting
-      int initialPointX = 700;
-      int initalPointY = 700;
-      int targetPointX = 200;
-      int targetPointY = 200;
-
-      public void paintComponent(Graphics g) {
-         super.paintComponent(g);    
-         setBackground(Color.WHITE); 
-         
-         g.setColor(Color.RED);       // change the drawing color
-         g.fillOval(targetPointX, targetPointY, 20, 20); // Target Point
-         
-         g.setColor(Color.BLACK);
-         g.fillRect(initialPointX, initalPointY, 5, 5); //Inital Point
-         t.start();
-
-      }
-   
-    	  
-   }
-   }
- 
-   // The entry main method
-   public static void main(String[] args) {
-      // Run the GUI codes on the Event-Dispatching thread for thread safety
-      SwingUtilities.invokeLater(new Runnable() {
-         @Override
-         public void run() {
-            new RandomWalk(); // Let the constructor do the job
-         }
-      });
-   }
+	Scanner userInput = new Scanner(System.in);
+	private static int width = 250;
+	private static int height = 250;
+	private static int Sizex = 750;
+	private static int Sizey = 750;
+	
+	
+	public RandomWalk(){
+        super("Random Walk");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE );
+        setSize(Sizex,Sizey);
+        setVisible(true);
+	}
+	
+	
+	public void paint(Graphics g){
+		
+		System.out.println("Enter the size of the target, between 10 and 50");
+		int size = userInput.nextInt();
+		
+		if(size > 50 || size < 10){
+			System.out.println("Please enter a value that is higher than 5 but lower than 30 next time.");
+			System.exit(0);
+		}
+		
+		super.paint(g);
+		Random ran = new Random();
+	    int targetx = ran.nextInt((Sizex  - size) / 2);
+        int targety = ran.nextInt((Sizey - size) / 2);
+		
+		g.setColor(Color.RED);
+		g.fillOval(targetx, targety, size, size);
+		
+		g.setColor(Color.BLACK);    
+	      do {
+	 	 
+	    	  Random rand = new Random();
+	          int next = rand.nextInt(4)+1;
+	          if(next == 1) {
+	        	  width +=1;
+		      }
+		      else if(next == 2) {
+		    	  width -= 1 ;
+		      }
+		      else if(next == 3) {
+		    	  height += 1 ;
+		      }
+		      else if(next == 4) {
+		    	  height -= 1 ;
+		      }
+	          
+	          if(width < 0) {
+	        	  width += 500;
+	          }
+	          else if(width > 500) {
+	        	  width -= 500;
+	          }
+	          
+	          if(height < 0) {
+	        	  height += 500;
+	          }
+	          else if(height > 500) {
+	        	  height -= 500;
+	          }
+	          
+	          g.drawRect(width, height, 1, 1);
+	      }while(width > targetx+size || width < targetx || height > targety+size || height < targety);
+	}
+		
+	
+	
+	public static void main(String args[]){
+		
+		RandomWalk walk = new RandomWalk();
+		
+		
+	}
+	
 }
